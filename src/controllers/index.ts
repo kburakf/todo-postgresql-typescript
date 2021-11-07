@@ -37,14 +37,14 @@ export const loginUser = async (req: Request, res: Response): Promise<Response> 
   let user: any = await pool.query('SELECT * FROM users WHERE username = $1 LIMIT 1', [username]);
 
   if (!user.rows.length) {
-    return res.status(404).json('User not exists');
+    return res.json({ status: 404, message: 'User not found' });
   }
 
   const user_password = user.rows[0].password;
   const result = await AuthLogic.comparePassword(password, user_password);
 
   if (!result) {
-    return res.status(400);
+    return res.status(400).json({ message: 'Wrong password' });
   }
 
   const token = AuthLogic.generateToken(user.rows[0].id);
@@ -62,7 +62,7 @@ export const getTodosByUserToken = async (req: Request, res: Response): Promise<
   const { user_id } = req.params;
   let todos: any = await pool.query('SELECT * FROM todos WHERE user_id = $1', [user_id])
   todos = TodoFormatter.prepareTodos(todos.rows);
-  return res.json(todos);
+  return res.json({todos, user_id});
 };
 
 export const updateTodo = async (req: Request, res: Response): Promise<Response> => {
