@@ -60,7 +60,7 @@ export const createTodo = async (req: Request, res: Response): Promise<Response>
 
 export const getTodosByUserToken = async (req: Request, res: Response): Promise<Response> => {
   const { user_id } = req.params;
-  let todos: any = await pool.query('SELECT * FROM todos WHERE user_id = $1', [user_id])
+  let todos: any = await pool.query('SELECT * FROM todos WHERE user_id = $1 ORDER BY created_at ASC', [user_id])
   todos = TodoFormatter.prepareTodos(todos.rows);
   return res.json({todos, user_id});
 };

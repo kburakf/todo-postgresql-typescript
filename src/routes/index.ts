@@ -8,7 +8,7 @@ router.post('/user', Controller.createUser);
 router.post('/user/login', Controller.loginUser);
 router.post('/todos', Middleware.verifyToken, Controller.createTodo);
 router.get('/todos/user', Middleware.verifyToken, Controller.getTodosByUserToken);
-router.put('/todos/:id', Middleware.verifyToken, Controller.updateTodo);
+router.patch('/todos/:id', Middleware.verifyToken, Controller.updateTodo);
 router.delete('/todos/:id', Middleware.verifyToken, Controller.deleteTodo);
 
 export default router;
